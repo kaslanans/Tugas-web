@@ -1,0 +1,630 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css");
+
+:root {
+    --imdb-dark-bg: #181818; /* Latar belakang abu-abu sangat gelap */
+    --imdb-secondary-bg: #282828; /* Latar belakang elemen sekunder (misal: tag) */
+    --imdb-text-color: #F8F8F8; /* Warna teks utama (putih terang) */
+    --imdb-subtle-text: #A0A0A0; /* Warna teks sekunder (abu-abu terang) */
+    --imdb-primary-red: #E50914; /* Warna merah primer */
+    --imdb-red-hover: #CC0812; /* Warna merah saat hover */
+    --imdb-border-color: #444; /* Warna border halus */
+    --imdb-button-bg: #3A3A3A; /* Latar belakang tombol sekunder */
+    --imdb-button-hover-bg: #4A4A4A; /* Latar belakang tombol sekunder saat hover */
+    --imdb-link-color: #7ab8f0; /* Warna link */
+    --imdb-favorite-button : yellow;
+    --imdb-link-hover-color: #a8d4ff;
+    --imdb-watchlist-yellow: crimson; /* Warna kuning khusus untuk watchlist/favorite */
+    --imdb-watchlist-yellow-hover: #ddb200; /* Warna kuning saat hover */
+}
+
+/* --- Gaya Global dan Reset Dasar --- */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--imdb-dark-bg);
+    color: var(--imdb-text-color);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Container Utama Halaman --- */
+.imdb-page-wrapper {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* --- Konten Utama (Poster/Info kiri, Sidebar kanan) --- */
+.imdb-main-content {
+    display: flex;
+    flex-wrap: wrap; /* Izinkan wrapping elemen pada layar kecil */
+    gap: 40px; /* Jarak antar kolom utama */
+    padding-top: 20px;
+    justify-content: space-between; /* Penting: Dorong kiri dan kanan ke ujung */
+    align-items: flex-start; /* Ratakan konten ke atas */
+}
+
+/* --- Bagian Kiri: Poster dan Informasi Film (Container Utama Kiri) --- */
+.imdb-content-left {
+    display: flex;
+    gap: 40px; /* Jarak antara poster dan info/trailer */
+    flex-grow: 1; /* Biarkan mengambil ruang yang tersedia */
+    flex-wrap: wrap; /* Izinkan konten di dalamnya wrap jika perlu (poster dan info) */
+    min-width: 300px; /* Pastikan ada min-width agar tidak terlalu kecil */
+    max-width: calc(100% - 220px - 40px); /* Batasi lebar agar ada ruang untuk sidebar */
+    /* Menggunakan calc: 100% - lebar_sidebar - gap */
+}
+
+/* --- Bagian Poster dengan Overlay Tombol Play --- */
+.imdb-poster-trailer-section {
+    position: relative;
+    width: 300px; /* Lebar standar untuk poster */
+    flex-shrink: 0; /* Pastikan tidak menyusut pada layar lebar */
+}
+
+.imdb-poster {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.imdb-trailer-overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7); /* Latar belakang transparan untuk tombol trailer */
+    backdrop-filter: blur(2px); /* Efek blur pada latar belakang overlay */
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+}
+
+.imdb-play-button {
+    background: none;
+    border: 1px solid var(--imdb-subtle-text);
+    color: var(--imdb-text-color);
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Jarak antara ikon dan teks */
+    margin: 0 auto; /* Pusatkan tombol */
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.imdb-play-button:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: var(--imdb-text-color);
+    color: var(--imdb-text-color);
+}
+
+/* --- Bagian Informasi Film (Judul, Sinopsis, dll.) --- */
+.imdb-info-section {
+    flex-grow: 1; /* Mengambil sisa ruang yang tersedia di samping poster */
+    min-width: 300px; /* Minimum lebar agar konten tidak terlalu sempit */
+    display: flex;
+    flex-direction: column; /* Tata letak info secara vertikal */
+}
+
+.imdb-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: var(--imdb-text-color);
+}
+
+.imdb-year {
+    color: var(--imdb-subtle-text);
+    font-weight: 400;
+    font-size: 2rem;
+}
+
+.imdb-subinfo {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    color: var(--imdb-subtle-text);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.imdb-genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.imdb-tag {
+    background-color: var(--imdb-secondary-bg);
+    border: 1px solid var(--imdb-border-color);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--imdb-subtle-text);
+    white-space: nowrap;
+}
+
+.imdb-overview {
+    color: var(--imdb-text-color);
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+/* --- Bagian Trailer Embed (Sekarang di dalam imdb-info-section) --- */
+.imdb-trailer-embed-section {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px; /* Beri jarak ke bagian Top Cast */
+}
+
+.imdb-trailer-embed-section .trailer-title {
+    color: var(--imdb-text-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.imdb-trailer-embed-section iframe {
+    border-radius: 8px;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    display: block;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Gaya untuk Bagian Top Cast --- */
+.imdb-top-cast-section {
+    margin-top: 30px; /* Jarak dari elemen di atasnya */
+    width: 100%; /* Ambil lebar penuh container parent */
+    padding-top: 20px; /* Padding atas di dalam section */
+    border-top: 1px solid var(--imdb-border-color); /* Garis pemisah */
+}
+
+.imdb-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.imdb-section-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--imdb-text-color);
+    margin: 0;
+}
+
+.imdb-section-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--imdb-subtle-text);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.imdb-section-actions:hover {
+    color: var(--imdb-text-color);
+}
+
+.imdb-section-actions .fas {
+    font-size: 0.8rem; /* Ukuran ikon panah dan pensil */
+}
+
+.imdb-cast-count {
+    color: var(--imdb-subtle-text); /* Warna untuk angka jumlah cast */
+    margin-right: 5px; /* Jarak dari panah */
+}
+
+.imdb-cast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Sesuaikan minmax jika perlu */
+    gap: 20px 30px; /* Gap vertikal dan horizontal */
+}
+
+.imdb-cast-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: var(--imdb-secondary-bg); /* Latar belakang untuk setiap item cast */
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--imdb-border-color);
+}
+
+.imdb-cast-photo-wrapper {
+    flex-shrink: 0; /* Pastikan foto tidak mengecil */
+    width: 45px; /* Ukuran foto profil */
+    height: 45px; /* Ukuran foto profil */
+    border-radius: 50%; /* Membuat foto melingkar */
+    overflow: hidden; /* Penting untuk memotong gambar menjadi lingkaran */
+    display: flex; /* Untuk pusatkan gambar di dalamnya jika ada placeholder */
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--imdb-subtle-text); /* Border tipis di sekitar foto */
+}
+
+.imdb-cast-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Memastikan gambar mengisi lingkaran tanpa distorsi */
+}
+
+.imdb-cast-details {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Detail mengisi sisa ruang */
+    text-align: left; /* Rata kiri teks nama/karakter */
+}
+
+.imdb-cast-name {
+    font-weight: 600;
+    color: var(--imdb-text-color);
+    font-size: 1rem;
+    white-space: nowrap; /* Mencegah nama pecah baris */
+    overflow: hidden; /* Sembunyikan jika terlalu panjang */
+    text-overflow: ellipsis; /* Tambahkan elipsis jika tersembunyi */
+}
+
+.imdb-cast-character {
+    font-size: 0.85rem;
+    color: var(--imdb-subtle-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- Gaya untuk Director/Writers/Stars (Summary) --- */
+.imdb-cast-crew-summary {
+    margin-top: 30px; /* Jarak dari grid Top Cast */
+    padding-top: 20px; /* Padding atas di dalam section */
+    border-top: 1px solid var(--imdb-border-color); /* Garis pemisah */
+}
+
+.imdb-cast-crew-summary p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+    color: var(--imdb-text-color);
+    text-align: left; /* Pastikan rata kiri */
+}
+
+.imdb-cast-crew-summary strong {
+    color: var(--imdb-subtle-text);
+    margin-right: 5px;
+}
+
+.imdb-cast-crew-summary a {
+    color: var(--imdb-text-color);
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.2s;
+}
+
+.imdb-cast-crew-summary a:hover {
+    color: var(--imdb-link-hover-color);
+    text-decoration: underline;
+}
+
+/* --- Bagian Kanan: Sidebar (Rating, Watchlist, Media) --- */
+.imdb-sidebar {
+    width: 220px; /* Lebar tetap untuk sidebar */
+    flex-shrink: 0; /* Penting: Pastikan sidebar tidak mengecil */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-left: 30px;
+    border-left: 1px solid var(--imdb-border-color);
+}
+
+.imdb-rating-section h3 {
+    font-size: 0.8rem;
+    color: var(--imdb-subtle-text);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.imdb-rating-value {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.imdb-rating-value .fas.fa-star {
+    color: var(--imdb-primary-red);
+    font-size: 1.5rem;
+}
+
+.imdb-rating-value strong {
+    font-size: 1.8rem;
+    color: var(--imdb-text-color);
+}
+
+.imdb-rating-count {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--imdb-subtle-text);
+}
+
+/* --- Gaya Dasar untuk Tombol "Add to Favorite" dan "Add to Watchlist" --- */
+/* Menyatukan gaya umum untuk kedua tombol */
+.imdb-rate-button,
+.imdb-watchlist-button {
+    border: none; /* Hapus border yang sudah ada di .imdb-watchlist-button lama */
+    padding: 12px 15px; /* Sesuaikan padding agar sama */
+    border-radius: 8px; /* Sesuaikan border-radius agar sama */
+    width: 100%;
+    cursor: pointer;
+    font-size: 1rem; /* Ukuran font standar */
+    font-weight: 600; /* Font weight standar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+}
+
+/* Gaya spesifik untuk tombol Watchlist (kuning) */
+.imdb-watchlist-button {
+    background-color: var(--imdb-watchlist-yellow);
+    color: black; /* Ubah warna teks menjadi hitam agar kontras dengan kuning */
+}
+
+.imdb-watchlist-button:hover:not(:disabled) {
+    background-color: var(--imdb-watchlist-yellow-hover);
+}
+
+/* Gaya spesifik untuk tombol Rate (Add to Favorite) */
+.imdb-rate-button {
+    background-color: var(--imdb-button-bg); /* Menggunakan warna abu-abu sekunder */
+    color: var(--imdb-text-color);
+    border: 1px solid var(--imdb-border-color); /* Tambahkan border untuk pembeda visual */
+}
+
+.imdb-rate-button:hover {
+    background-color: var(--imdb-button-hover-bg);
+}
+
+/* Gaya untuk tombol disabled */
+.imdb-watchlist-button:disabled,
+.imdb-rate-button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+    color: #ccc; /* Buat teks lebih terang saat disabled */
+}
+
+.imdb-watchlist-section {
+    text-align: center;
+}
+
+.imdb-added-count {
+    font-size: 0.8rem; /* Menggunakan ukuran font dari aslinya */
+    color: var(--imdb-subtle-text); /* Menggunakan warna teks dari aslinya */
+    text-align: center;
+    margin-top: 8px; /* Jarak dari tombol */
+}
+
+.imdb-added-count .fas.fa-check {
+    color: #4CAF50;
+    margin-right: 5px;
+}
+
+.imdb-media-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.imdb-media-item {
+    background-color: var(--imdb-button-bg);
+    border: 1px solid var(--imdb-border-color);
+    color: var(--imdb-text-color);
+    padding: 8px 12px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.imdb-media-item:hover {
+    background-color: var(--imdb-button-hover-bg);
+}
+
+/* --- Tombol Kembali (Back Button) --- */
+.back-button {
+    background-color: var(--imdb-button-bg);
+    color: var(--imdb-text-color);
+    border: 1px solid var(--imdb-border-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 40px auto 20px auto;
+    display: block;
+    font-size: 1rem;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: var(--imdb-button-hover-bg);
+    border-color: var(--imdb-text-color);
+}
+
+
+/* --- Media Queries untuk Responsivitas --- */
+
+/* Untuk desktop (layar lebih lebar dari 901px) */
+@media (min-width: 901px) {
+    .imdb-main-content {
+        flex-direction: row; /* Pastikan main content sejajar */
+        justify-content: space-between; /* Dorong item ke ujung */
+        align-items: flex-start; /* Ratakan konten ke atas */
+    }
+
+    .imdb-content-left {
+        flex-direction: row; /* Poster dan Info berdampingan */
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .imdb-poster-trailer-section {
+        width: 300px;
+    }
+
+    .imdb-info-section {
+        flex-grow: 1;
+    }
+
+    .imdb-trailer-embed-section {
+        width: 100%;
+    }
+
+    .imdb-sidebar {
+        /* Sidebar sudah diatur di atas, pastikan tidak ada override yang salah */
+        border-left: 1px solid var(--imdb-border-color);
+        padding-left: 30px;
+        width: 220px;
+        flex-shrink: 0;
+    }
+}
+
+/* Untuk tablet dalam mode potret dan mobile (lebar kurang dari 900px) */
+@media (max-width: 900px) {
+    .imdb-main-content {
+        flex-direction: column; /* Ubah tata letak menjadi tumpukan vertikal */
+        align-items: center; /* Pusatkan item */
+        gap: 20px;
+        text-align: center; /* Teks rata tengah */
+    }
+
+    .imdb-content-left {
+        flex-direction: column; /* Poster dan Info juga menumpuk */
+        align-items: center;
+        text-align: center;
+        gap: 20px; /* Jarak antara poster dan info */
+        width: 100%; /* Ambil lebar penuh */
+        max-width: 500px; /* Batasi lebar agar tidak terlalu melebar */
+    }
+
+    .imdb-poster-trailer-section {
+        width: 100%; /* Poster ambil lebar penuh dari parent */
+        max-width: 300px; /* Batasi lebar poster */
+    }
+
+    .imdb-trailer-overlay {
+        position: absolute; /* Tetap absolut di dalam poster */
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(2px);
+        padding: 10px;
+    }
+
+    .imdb-play-button {
+        width: auto; /* Sesuaikan lebar tombol */
+        padding: 10px 20px;
+    }
+
+    .imdb-title {
+        font-size: 2rem;
+    }
+
+    .imdb-year {
+        font-size: 1.6rem;
+    }
+
+    .imdb-subinfo,
+    .imdb-genres {
+        justify-content: center; /* Pusatkan item di flex container ini */
+    }
+
+    /* Khusus untuk teks di imdb-info-section agar tetap rata kiri di mobile */
+    .imdb-info-section {
+        text-align: left; /* Kembalikan rata kiri untuk info utama */
+        align-items: flex-start; /* Ratakan konten info ke kiri */
+    }
+    .imdb-info-section .imdb-title,
+    .imdb-info-section .imdb-subinfo,
+    .imdb-info-section .imdb-genres,
+    .imdb-info-section .imdb-overview,
+    .imdb-info-section .imdb-trailer-embed-section,
+    .imdb-info-section .imdb-top-cast-section,
+    .imdb-info-section .imdb-cast-crew-summary {
+        text-align: left; /* Pastikan elemen-elemen ini rata kiri */
+        width: 100%; /* Ambil lebar penuh */
+    }
+    .imdb-info-section .imdb-top-cast-section .imdb-section-header {
+        justify-content: space-between; /* Pastikan header top cast tetap justify-between */
+    }
+    .imdb-cast-grid { /* Pastikan grid cast item tetap di tengah */
+        justify-content: center;
+    }
+
+
+    .imdb-sidebar {
+        flex-direction: row; /* Sidebar mungkin berbaris pada layar menengah */
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        padding-top: 20px;
+        border-top: 1px solid var(--imdb-border-color); /* Tambahkan border horizontal */
+        border-left: none; /* Hapus border vertikal */
+        width: 100%; /* Ambil lebar penuh */
+        max-width: 400px; /* Batasi lebar */
+    }
+
+    .imdb-rating-section,
+    .imdb-watchlist-section,
+    .imdb-media-links {
+        width: auto;
+        min-width: unset;
+        text-align: center;
+    }
+
+    .imdb-rating-value {
+        justify-content: center;
+    }
+}
+
+/* Untuk ponsel kecil (lebar kurang dari 480px) */
+@media (max-width: 480px) {
+    .imdb-title {
+        font-size: 1.8rem;
+    }
+
+    .imdb-year {
+        font-size: 1.4rem;
+    }
+
+    .imdb-sidebar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .imdb-rate-button,
+    .imdb-watchlist-button,
+    .imdb-media-item {
+        width: 100%;
+    }
+}
+
+.imdb-comment-wrapper {
+  background-color: #1a1a1a;
+  padding: 30px;
+  color: white;
+  border-top: 1px solid #333;
+}
